@@ -1,20 +1,103 @@
+import React from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Button } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-export default function App() {
+const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
+
+function HomeScreen({ navigation }) {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
+    <View style={styles.screen}>
+      <Text style={styles.title}>Home</Text>
+      <Text style={styles.body}>This is the Home tab.</Text>
+      <Button
+        title="Go to Details"
+        onPress={() => navigation.navigate('Details')}
+      />
     </View>
   );
 }
 
+function DetailsScreen() {
+  return (
+    <View style={styles.screen}>
+      <Text style={styles.title}>Details</Text>
+      <Text style={styles.body}>This screen is pushed onto the Home stack.</Text>
+    </View>
+  );
+}
+
+function SettingsScreen({ navigation }) {
+  return (
+    <View style={styles.screen}>
+      <Text style={styles.title}>Settings</Text>
+      <Text style={styles.body}>This is the Settings tab.</Text>
+      <Button
+        title="Go to About"
+        onPress={() => navigation.navigate('About')}
+      />
+    </View>
+  );
+}
+
+function AboutScreen() {
+  return (
+    <View style={styles.screen}>
+      <Text style={styles.title}>About</Text>
+      <Text style={styles.body}>This screen is pushed onto the Settings stack.</Text>
+    </View>
+  );
+}
+
+function HomeStack() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="Home" component={HomeScreen} />
+      <Stack.Screen name="Details" component={DetailsScreen} />
+    </Stack.Navigator>
+  );
+}
+
+function SettingsStack() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="Settings" component={SettingsScreen} />
+      <Stack.Screen name="About" component={AboutScreen} />
+    </Stack.Navigator>
+  );
+}
+
+export default function App() {
+  return (
+    <>
+      <NavigationContainer>
+        <Tab.Navigator>
+          <Tab.Screen name="HomeTab" component={HomeStack} />
+          <Tab.Screen name="SettingsTab" component={SettingsStack} />
+        </Tab.Navigator>
+      </NavigationContainer>
+      <StatusBar style="auto" />
+    </>
+  );
+}
+
 const styles = StyleSheet.create({
-  container: {
+  screen: {
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 8,
+  },
+  body: {
+    fontSize: 16,
+    marginBottom: 16,
   },
 });
