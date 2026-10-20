@@ -17,14 +17,28 @@ function HomeScreen({ navigation }) {
         title="Go to Details"
         onPress={() => navigation.navigate('Details')}
       />
+      
     </View>
   );
 }
 
-function DetailsScreen() {
+function DetailsScreen({ navigation }) {
   return (
     <View style={styles.screen}>
       <Text style={styles.title}>Details</Text>
+      <Text style={styles.body}>This screen is pushed onto the Home stack.</Text>
+      <Button
+        title="Go to More Details"
+        onPress={() => navigation.navigate('MoreDetails')}
+      />
+    </View>
+  );
+}
+
+function MoreDetailsScreen() {
+  return (
+    <View style={styles.screen}>
+      <Text style={styles.title}>More Details</Text>
       <Text style={styles.body}>This screen is pushed onto the Home stack.</Text>
     </View>
   );
@@ -57,6 +71,7 @@ function HomeStack() {
     <Stack.Navigator>
       <Stack.Screen name="Home" component={HomeScreen} />
       <Stack.Screen name="Details" component={DetailsScreen} />
+      <Stack.Screen name="MoreDetails" component={MoreDetailsScreen} />
     </Stack.Navigator>
   );
 }
@@ -74,7 +89,7 @@ export default function App() {
   return (
     <>
       <NavigationContainer>
-        <Tab.Navigator>
+        <Tab.Navigator screenOptions={{ headerShown: false }}>
           <Tab.Screen name="HomeTab" component={HomeStack} />
           <Tab.Screen name="SettingsTab" component={SettingsStack} />
         </Tab.Navigator>
